@@ -8,6 +8,67 @@ int extraMemoryAllocated;
 // extraMemoryAllocated counts bytes of memory allocated
 void heapSort(int arr[], int n)
 {
+    int maxHeapSize = 0; // Variable to track maximum heap size
+
+    // Build max heap
+    for (int i = n / 2 - 1; i >= 0; i--)
+    {
+        int parent = i;
+        while (parent * 2 + 1 < n) // Check if left child exists
+        {
+            int largerChild = parent * 2 + 1; // Assume left child is larger
+            if (largerChild + 1 < n && arr[largerChild] < arr[largerChild + 1]) // Check if right child is larger
+            {
+                largerChild = largerChild + 1;
+            }
+            if (arr[parent] < arr[largerChild]) // Swap parent with larger child if parent is smaller
+            {
+                int temp = arr[parent];
+                arr[parent] = arr[largerChild];
+                arr[largerChild] = temp;
+            }
+            else
+            {
+                break; // Parent is already larger than its children, so we're done
+            }
+            parent = largerChild;
+        }
+        maxHeapSize = parent + 1; // Update maximum heap size
+    }
+
+    // Perform heap sort
+    for (int i = n - 1; i > 0; i--)
+    {
+        // Swap the root node with the last unsorted element
+        int temp = arr[i];
+        arr[i] = arr[0];
+        arr[0] = temp;
+
+        // Re-heapify the remaining elements
+        int parent = 0;
+        while (parent * 2 + 1 < i) // Check if left child exists
+        {
+            int largerChild = parent * 2 + 1; // Assume left child is larger
+            if (largerChild + 1 < i && arr[largerChild] < arr[largerChild + 1]) // Check if right child is larger
+            {
+                largerChild = largerChild + 1;
+            }
+            if (arr[parent] < arr[largerChild]) // Swap parent with larger child if parent is smaller
+            {
+                int temp = arr[parent];
+                arr[parent] = arr[largerChild];
+                arr[largerChild] = temp;
+            }
+            else
+            {
+                break; // Parent is already larger than its children, so we're done
+            }
+            parent = largerChild;
+        }
+    }
+
+    int extraMemoryAllocated = maxHeapSize * sizeof(int); // Calculate extra memory allocated
+
 }
 
 
@@ -15,6 +76,57 @@ void heapSort(int arr[], int n)
 // extraMemoryAllocated counts bytes of extra memory allocated
 void mergeSort(int pData[], int l, int r)
 {
+	if (l < r) {
+  int m = l + (r - l) / 2;
+  mergeSort(pData, l, m);
+  mergeSort(pData, m + 1, r);
+
+  int i, j, k;
+  int n1 = m - l + 1;
+  int n2 = r - m;
+
+        // allocate memory for the temporary arrays
+  int* L = (int*) malloc(n1 * sizeof(int));
+  int* R = (int*) malloc(n2 * sizeof(int));
+   // copy data to temporary arrays
+  for (i = 0; i < n1; i++) {
+    L[i] = pData[l + i];
+    extraMemoryAllocated += sizeof(int);
+        }
+  for (j = 0; j < n2; j++) {
+    R[j] = pData[m + 1 + j];
+    extraMemoryAllocated += sizeof(int);}
+  // merge the temporary arrays back into pData[l..r]
+    i = 0;
+    j = 0;
+    k = l;
+    while (i < n1 && j < n2) {
+       if (L[i] <= R[j]) {
+       pData[k] = L[i];
+        i++;   }
+            else {
+                pData[k] = R[j];
+                j++;
+            }
+            k++;
+        }
+        // copy the remaining elements 
+        while (i < n1) {
+            pData[k] = L[i];
+            i++;
+            k++;
+        }
+        // copy the remaining elements
+        while (j < n2) {
+            pData[k] = R[j];
+            j++;
+            k++;
+        }
+
+        // free memory
+        free(L);
+        free(R);
+    }
 }
 
 // parses input file to an integer array
