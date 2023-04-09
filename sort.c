@@ -8,13 +8,13 @@ int extraMemoryAllocated;
 // extraMemoryAllocated counts bytes of memory allocated
 void heapSort(int arr[], int n)
 {
-    int maxHeapSize = 0; // Variable to track maximum heap size
+    int maxHeapSize = 0; // to track maximum heap size
 
     // Build max heap
     for (int i = n / 2 - 1; i >= 0; i--)
     {
         int parent = i;
-        while (parent * 2 + 1 < n) // Check if left child exists
+        while (parent * 2 + 1 < n) 
         {
             int largerChild = parent * 2 + 1; // Assume left child is larger
             if (largerChild + 1 < n && arr[largerChild] < arr[largerChild + 1]) // Check if right child is larger
@@ -29,11 +29,11 @@ void heapSort(int arr[], int n)
             }
             else
             {
-                break; // Parent is already larger than its children, so we're done
+                break; 
             }
             parent = largerChild;
         }
-        maxHeapSize = parent + 1; // Update maximum heap size
+        maxHeapSize = parent + 1; 
     }
 
     // Perform heap sort
@@ -44,16 +44,15 @@ void heapSort(int arr[], int n)
         arr[i] = arr[0];
         arr[0] = temp;
 
-        // Re-heapify the remaining elements
         int parent = 0;
-        while (parent * 2 + 1 < i) // Check if left child exists
+        while (parent * 2 + 1 < i) 
         {
             int largerChild = parent * 2 + 1; // Assume left child is larger
             if (largerChild + 1 < i && arr[largerChild] < arr[largerChild + 1]) // Check if right child is larger
             {
                 largerChild = largerChild + 1;
             }
-            if (arr[parent] < arr[largerChild]) // Swap parent with larger child if parent is smaller
+            if (arr[parent] < arr[largerChild]) 
             {
                 int temp = arr[parent];
                 arr[parent] = arr[largerChild];
@@ -61,7 +60,7 @@ void heapSort(int arr[], int n)
             }
             else
             {
-                break; // Parent is already larger than its children, so we're done
+                break; 
             }
             parent = largerChild;
         }
@@ -160,14 +159,16 @@ int parseData(char *inputFileName, int **ppData)
 	return dataSz;
 }
 
-// prints first and last 100 items in the data array
 void printArray(int pData[], int dataSz)
 {
 	int i, sz = dataSz - 100;
 	printf("\tData:\n\t");
-	for (i=0;i<100;++i)
-	{
-		printf("%d ",pData[i]);
+  
+	for (i=0;i<100;++i){
+    	if(i>=dataSz){
+      		printf("\n\n");
+      		return;}
+    printf("%d ",pData[i]);
 	}
 	printf("\n\t");
 	
